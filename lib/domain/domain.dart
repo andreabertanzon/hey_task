@@ -1,3 +1,3 @@
 export 'sub_task.dart';
-export 'tag.dart';
+export 'category.dart';
 export 'todo.dart';

@@ -9,7 +9,7 @@ class Todo extends Equatable {
   final String? description;
   List<SubTask>? subTasks;
   DateTime? dueDate;
-  List<Tag>? tags;
+  Category? category;
   bool completed = false;
 
   Todo({this.id,
@@ -17,10 +17,10 @@ class Todo extends Equatable {
     this.description,
     this.subTasks,
     this.dueDate,
-    this.tags});
+    this.category});
 
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [id];
 
 }

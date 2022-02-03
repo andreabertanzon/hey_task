@@ -6,7 +6,7 @@ abstract class ITodoRepository{
   Stream<List<Todo>> watchTodos();
   Stream<List<Todo>> getCompletedTodos();
   Future<List<Todo>> getTodosByDate(DateTime dateTime);
-  Future<List<Todo>> getCompletedTodosByDate();
-  Future<void> markTodoCompleted();
-  Future<List<Todo>> getTodoByTag(Tag tag);
+  Future<List<Todo>> getCompletedTodosByDate(DateTime dateTime);
+  Future<void> markTodoCompleted(Todo todo);
+  Future<List<Todo>> getTodosByCategory(Category category);
 }
