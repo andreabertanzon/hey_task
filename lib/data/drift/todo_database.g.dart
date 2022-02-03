@@ -7,7 +7,7 @@ part of 'todo_database.dart';
 // **************************************************************************
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
-class Todo extends DataClass implements Insertable<Todo> {
+class DriftTodo extends DataClass implements Insertable<DriftTodo> {
   final int id;
   final String title;
   final String? description;
@@ -15,7 +15,7 @@ class Todo extends DataClass implements Insertable<Todo> {
   final DateTime creationDate;
   final DateTime lastUpdateDate;
   final bool completed;
-  Todo(
+  DriftTodo(
       {required this.id,
       required this.title,
       this.description,
@@ -23,9 +23,9 @@ class Todo extends DataClass implements Insertable<Todo> {
       required this.creationDate,
       required this.lastUpdateDate,
       required this.completed});
-  factory Todo.fromData(Map<String, dynamic> data, {String? prefix}) {
+  factory DriftTodo.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return Todo(
+    return DriftTodo(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       title: const StringType()
@@ -59,8 +59,8 @@ class Todo extends DataClass implements Insertable<Todo> {
     return map;
   }
 
-  DriftTodoCompanion toCompanion(bool nullToAbsent) {
-    return DriftTodoCompanion(
+  DriftTodosCompanion toCompanion(bool nullToAbsent) {
+    return DriftTodosCompanion(
       id: Value(id),
       title: Value(title),
       description: description == null && nullToAbsent
@@ -75,10 +75,10 @@ class Todo extends DataClass implements Insertable<Todo> {
     );
   }
 
-  factory Todo.fromJson(Map<String, dynamic> json,
+  factory DriftTodo.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Todo(
+    return DriftTodo(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String?>(json['description']),
@@ -102,7 +102,7 @@ class Todo extends DataClass implements Insertable<Todo> {
     };
   }
 
-  Todo copyWith(
+  DriftTodo copyWith(
           {int? id,
           String? title,
           String? description,
@@ -110,7 +110,7 @@ class Todo extends DataClass implements Insertable<Todo> {
           DateTime? creationDate,
           DateTime? lastUpdateDate,
           bool? completed}) =>
-      Todo(
+      DriftTodo(
         id: id ?? this.id,
         title: title ?? this.title,
         description: description ?? this.description,
@@ -121,7 +121,7 @@ class Todo extends DataClass implements Insertable<Todo> {
       );
   @override
   String toString() {
-    return (StringBuffer('Todo(')
+    return (StringBuffer('DriftTodo(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
@@ -139,7 +139,7 @@ class Todo extends DataClass implements Insertable<Todo> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Todo &&
+      (other is DriftTodo &&
           other.id == this.id &&
           other.title == this.title &&
           other.description == this.description &&
@@ -149,7 +149,7 @@ class Todo extends DataClass implements Insertable<Todo> {
           other.completed == this.completed);
 }
 
-class DriftTodoCompanion extends UpdateCompanion<Todo> {
+class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
   final Value<int> id;
   final Value<String> title;
   final Value<String?> description;
@@ -157,7 +157,7 @@ class DriftTodoCompanion extends UpdateCompanion<Todo> {
   final Value<DateTime> creationDate;
   final Value<DateTime> lastUpdateDate;
   final Value<bool> completed;
-  const DriftTodoCompanion({
+  const DriftTodosCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
     this.description = const Value.absent(),
@@ -166,7 +166,7 @@ class DriftTodoCompanion extends UpdateCompanion<Todo> {
     this.lastUpdateDate = const Value.absent(),
     this.completed = const Value.absent(),
   });
-  DriftTodoCompanion.insert({
+  DriftTodosCompanion.insert({
     this.id = const Value.absent(),
     required String title,
     this.description = const Value.absent(),
@@ -175,7 +175,7 @@ class DriftTodoCompanion extends UpdateCompanion<Todo> {
     this.lastUpdateDate = const Value.absent(),
     this.completed = const Value.absent(),
   }) : title = Value(title);
-  static Insertable<Todo> custom({
+  static Insertable<DriftTodo> custom({
     Expression<int>? id,
     Expression<String>? title,
     Expression<String?>? description,
@@ -195,7 +195,7 @@ class DriftTodoCompanion extends UpdateCompanion<Todo> {
     });
   }
 
-  DriftTodoCompanion copyWith(
+  DriftTodosCompanion copyWith(
       {Value<int>? id,
       Value<String>? title,
       Value<String?>? description,
@@ -203,7 +203,7 @@ class DriftTodoCompanion extends UpdateCompanion<Todo> {
       Value<DateTime>? creationDate,
       Value<DateTime>? lastUpdateDate,
       Value<bool>? completed}) {
-    return DriftTodoCompanion(
+    return DriftTodosCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
@@ -243,7 +243,7 @@ class DriftTodoCompanion extends UpdateCompanion<Todo> {
 
   @override
   String toString() {
-    return (StringBuffer('DriftTodoCompanion(')
+    return (StringBuffer('DriftTodosCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
@@ -256,10 +256,11 @@ class DriftTodoCompanion extends UpdateCompanion<Todo> {
   }
 }
 
-class $DriftTodoTable extends DriftTodo with TableInfo<$DriftTodoTable, Todo> {
+class $DriftTodosTable extends DriftTodos
+    with TableInfo<$DriftTodosTable, DriftTodo> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $DriftTodoTable(this._db, [this._alias]);
+  $DriftTodosTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -284,7 +285,7 @@ class $DriftTodoTable extends DriftTodo with TableInfo<$DriftTodoTable, Todo> {
       'category_id', aliasedName, true,
       type: const IntType(),
       requiredDuringInsert: false,
-      $customConstraints: 'NULL REFERENCES Category(id)');
+      $customConstraints: 'NULL REFERENCES DriftCategory(id)');
   final VerificationMeta _creationDateMeta =
       const VerificationMeta('creationDate');
   @override
@@ -320,11 +321,11 @@ class $DriftTodoTable extends DriftTodo with TableInfo<$DriftTodoTable, Todo> {
         completed
       ];
   @override
-  String get aliasedName => _alias ?? 'drift_todo';
+  String get aliasedName => _alias ?? 'drift_todos';
   @override
-  String get actualTableName => 'drift_todo';
+  String get actualTableName => 'drift_todos';
   @override
-  VerificationContext validateIntegrity(Insertable<Todo> instance,
+  VerificationContext validateIntegrity(Insertable<DriftTodo> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -371,25 +372,26 @@ class $DriftTodoTable extends DriftTodo with TableInfo<$DriftTodoTable, Todo> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Todo map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Todo.fromData(data,
+  DriftTodo map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return DriftTodo.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $DriftTodoTable createAlias(String alias) {
-    return $DriftTodoTable(_db, alias);
+  $DriftTodosTable createAlias(String alias) {
+    return $DriftTodosTable(_db, alias);
   }
 }
 
-class SubTask extends DataClass implements Insertable<SubTask> {
+class DriftSubTask extends DataClass implements Insertable<DriftSubTask> {
   final int id;
   final bool completed;
   final int todoId;
-  SubTask({required this.id, required this.completed, required this.todoId});
-  factory SubTask.fromData(Map<String, dynamic> data, {String? prefix}) {
+  DriftSubTask(
+      {required this.id, required this.completed, required this.todoId});
+  factory DriftSubTask.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return SubTask(
+    return DriftSubTask(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       completed: const BoolType()
@@ -407,18 +409,18 @@ class SubTask extends DataClass implements Insertable<SubTask> {
     return map;
   }
 
-  DriftSubTaskCompanion toCompanion(bool nullToAbsent) {
-    return DriftSubTaskCompanion(
+  DriftSubTasksCompanion toCompanion(bool nullToAbsent) {
+    return DriftSubTasksCompanion(
       id: Value(id),
       completed: Value(completed),
       todoId: Value(todoId),
     );
   }
 
-  factory SubTask.fromJson(Map<String, dynamic> json,
+  factory DriftSubTask.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SubTask(
+    return DriftSubTask(
       id: serializer.fromJson<int>(json['id']),
       completed: serializer.fromJson<bool>(json['completed']),
       todoId: serializer.fromJson<int>(json['todoId']),
@@ -434,14 +436,15 @@ class SubTask extends DataClass implements Insertable<SubTask> {
     };
   }
 
-  SubTask copyWith({int? id, bool? completed, int? todoId}) => SubTask(
+  DriftSubTask copyWith({int? id, bool? completed, int? todoId}) =>
+      DriftSubTask(
         id: id ?? this.id,
         completed: completed ?? this.completed,
         todoId: todoId ?? this.todoId,
       );
   @override
   String toString() {
-    return (StringBuffer('SubTask(')
+    return (StringBuffer('DriftSubTask(')
           ..write('id: $id, ')
           ..write('completed: $completed, ')
           ..write('todoId: $todoId')
@@ -454,27 +457,27 @@ class SubTask extends DataClass implements Insertable<SubTask> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is SubTask &&
+      (other is DriftSubTask &&
           other.id == this.id &&
           other.completed == this.completed &&
           other.todoId == this.todoId);
 }
 
-class DriftSubTaskCompanion extends UpdateCompanion<SubTask> {
+class DriftSubTasksCompanion extends UpdateCompanion<DriftSubTask> {
   final Value<int> id;
   final Value<bool> completed;
   final Value<int> todoId;
-  const DriftSubTaskCompanion({
+  const DriftSubTasksCompanion({
     this.id = const Value.absent(),
     this.completed = const Value.absent(),
     this.todoId = const Value.absent(),
   });
-  DriftSubTaskCompanion.insert({
+  DriftSubTasksCompanion.insert({
     this.id = const Value.absent(),
     this.completed = const Value.absent(),
     required int todoId,
   }) : todoId = Value(todoId);
-  static Insertable<SubTask> custom({
+  static Insertable<DriftSubTask> custom({
     Expression<int>? id,
     Expression<bool>? completed,
     Expression<int>? todoId,
@@ -486,9 +489,9 @@ class DriftSubTaskCompanion extends UpdateCompanion<SubTask> {
     });
   }
 
-  DriftSubTaskCompanion copyWith(
+  DriftSubTasksCompanion copyWith(
       {Value<int>? id, Value<bool>? completed, Value<int>? todoId}) {
-    return DriftSubTaskCompanion(
+    return DriftSubTasksCompanion(
       id: id ?? this.id,
       completed: completed ?? this.completed,
       todoId: todoId ?? this.todoId,
@@ -512,7 +515,7 @@ class DriftSubTaskCompanion extends UpdateCompanion<SubTask> {
 
   @override
   String toString() {
-    return (StringBuffer('DriftSubTaskCompanion(')
+    return (StringBuffer('DriftSubTasksCompanion(')
           ..write('id: $id, ')
           ..write('completed: $completed, ')
           ..write('todoId: $todoId')
@@ -521,11 +524,11 @@ class DriftSubTaskCompanion extends UpdateCompanion<SubTask> {
   }
 }
 
-class $DriftSubTaskTable extends DriftSubTask
-    with TableInfo<$DriftSubTaskTable, SubTask> {
+class $DriftSubTasksTable extends DriftSubTasks
+    with TableInfo<$DriftSubTasksTable, DriftSubTask> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $DriftSubTaskTable(this._db, [this._alias]);
+  $DriftSubTasksTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -547,15 +550,15 @@ class $DriftSubTaskTable extends DriftSubTask
       'todo_id', aliasedName, false,
       type: const IntType(),
       requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES Todo(id)');
+      $customConstraints: 'REFERENCES DriftTodo(id)');
   @override
   List<GeneratedColumn> get $columns => [id, completed, todoId];
   @override
-  String get aliasedName => _alias ?? 'drift_sub_task';
+  String get aliasedName => _alias ?? 'drift_sub_tasks';
   @override
-  String get actualTableName => 'drift_sub_task';
+  String get actualTableName => 'drift_sub_tasks';
   @override
-  VerificationContext validateIntegrity(Insertable<SubTask> instance,
+  VerificationContext validateIntegrity(Insertable<DriftSubTask> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -578,24 +581,24 @@ class $DriftSubTaskTable extends DriftSubTask
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  SubTask map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return SubTask.fromData(data,
+  DriftSubTask map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return DriftSubTask.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $DriftSubTaskTable createAlias(String alias) {
-    return $DriftSubTaskTable(_db, alias);
+  $DriftSubTasksTable createAlias(String alias) {
+    return $DriftSubTasksTable(_db, alias);
   }
 }
 
-class Category extends DataClass implements Insertable<Category> {
+class DriftCategory extends DataClass implements Insertable<DriftCategory> {
   final int id;
   final String name;
-  Category({required this.id, required this.name});
-  factory Category.fromData(Map<String, dynamic> data, {String? prefix}) {
+  DriftCategory({required this.id, required this.name});
+  factory DriftCategory.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return Category(
+    return DriftCategory(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       name: const StringType()
@@ -610,17 +613,17 @@ class Category extends DataClass implements Insertable<Category> {
     return map;
   }
 
-  DriftCategoryCompanion toCompanion(bool nullToAbsent) {
-    return DriftCategoryCompanion(
+  DriftCategoriesCompanion toCompanion(bool nullToAbsent) {
+    return DriftCategoriesCompanion(
       id: Value(id),
       name: Value(name),
     );
   }
 
-  factory Category.fromJson(Map<String, dynamic> json,
+  factory DriftCategory.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Category(
+    return DriftCategory(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
     );
@@ -634,13 +637,13 @@ class Category extends DataClass implements Insertable<Category> {
     };
   }
 
-  Category copyWith({int? id, String? name}) => Category(
+  DriftCategory copyWith({int? id, String? name}) => DriftCategory(
         id: id ?? this.id,
         name: name ?? this.name,
       );
   @override
   String toString() {
-    return (StringBuffer('Category(')
+    return (StringBuffer('DriftCategory(')
           ..write('id: $id, ')
           ..write('name: $name')
           ..write(')'))
@@ -652,21 +655,23 @@ class Category extends DataClass implements Insertable<Category> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Category && other.id == this.id && other.name == this.name);
+      (other is DriftCategory &&
+          other.id == this.id &&
+          other.name == this.name);
 }
 
-class DriftCategoryCompanion extends UpdateCompanion<Category> {
+class DriftCategoriesCompanion extends UpdateCompanion<DriftCategory> {
   final Value<int> id;
   final Value<String> name;
-  const DriftCategoryCompanion({
+  const DriftCategoriesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
   });
-  DriftCategoryCompanion.insert({
+  DriftCategoriesCompanion.insert({
     this.id = const Value.absent(),
     required String name,
   }) : name = Value(name);
-  static Insertable<Category> custom({
+  static Insertable<DriftCategory> custom({
     Expression<int>? id,
     Expression<String>? name,
   }) {
@@ -676,8 +681,8 @@ class DriftCategoryCompanion extends UpdateCompanion<Category> {
     });
   }
 
-  DriftCategoryCompanion copyWith({Value<int>? id, Value<String>? name}) {
-    return DriftCategoryCompanion(
+  DriftCategoriesCompanion copyWith({Value<int>? id, Value<String>? name}) {
+    return DriftCategoriesCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
     );
@@ -697,7 +702,7 @@ class DriftCategoryCompanion extends UpdateCompanion<Category> {
 
   @override
   String toString() {
-    return (StringBuffer('DriftCategoryCompanion(')
+    return (StringBuffer('DriftCategoriesCompanion(')
           ..write('id: $id, ')
           ..write('name: $name')
           ..write(')'))
@@ -705,11 +710,11 @@ class DriftCategoryCompanion extends UpdateCompanion<Category> {
   }
 }
 
-class $DriftCategoryTable extends DriftCategory
-    with TableInfo<$DriftCategoryTable, Category> {
+class $DriftCategoriesTable extends DriftCategories
+    with TableInfo<$DriftCategoriesTable, DriftCategory> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $DriftCategoryTable(this._db, [this._alias]);
+  $DriftCategoriesTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
@@ -725,11 +730,11 @@ class $DriftCategoryTable extends DriftCategory
   @override
   List<GeneratedColumn> get $columns => [id, name];
   @override
-  String get aliasedName => _alias ?? 'drift_category';
+  String get aliasedName => _alias ?? 'drift_categories';
   @override
-  String get actualTableName => 'drift_category';
+  String get actualTableName => 'drift_categories';
   @override
-  VerificationContext validateIntegrity(Insertable<Category> instance,
+  VerificationContext validateIntegrity(Insertable<DriftCategory> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -748,25 +753,26 @@ class $DriftCategoryTable extends DriftCategory
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Category map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Category.fromData(data,
+  DriftCategory map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return DriftCategory.fromData(data,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $DriftCategoryTable createAlias(String alias) {
-    return $DriftCategoryTable(_db, alias);
+  $DriftCategoriesTable createAlias(String alias) {
+    return $DriftCategoriesTable(_db, alias);
   }
 }
 
 abstract class _$HeyTaskDatabase extends GeneratedDatabase {
   _$HeyTaskDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  late final $DriftTodoTable driftTodo = $DriftTodoTable(this);
-  late final $DriftSubTaskTable driftSubTask = $DriftSubTaskTable(this);
-  late final $DriftCategoryTable driftCategory = $DriftCategoryTable(this);
+  late final $DriftTodosTable driftTodos = $DriftTodosTable(this);
+  late final $DriftSubTasksTable driftSubTasks = $DriftSubTasksTable(this);
+  late final $DriftCategoriesTable driftCategories =
+      $DriftCategoriesTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [driftTodo, driftSubTask, driftCategory];
+      [driftTodos, driftSubTasks, driftCategories];
 }

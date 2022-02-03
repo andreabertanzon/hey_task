@@ -1,11 +1,15 @@
 import 'package:hey_task/data/i_todo_repository.dart';
-import 'package:hey_task/domain/category.dart';
-import 'package:hey_task/domain/todo.dart';
+import 'package:hey_task/domain/domain.dart';
+import 'package:hey_task/data/drift/todo_database.dart';
 
 class TodoRepository implements ITodoRepository{
+  HeyTaskDatabase db;
+
+  TodoRepository({required this.db});
+
   @override
   Future<List<Todo>> getAllTodos() {
-    // TODO: implement getAllTodos
+    // TODO: implement getCompletedTodos
     throw UnimplementedError();
   }
 
