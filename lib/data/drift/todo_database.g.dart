@@ -12,6 +12,7 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
   final String title;
   final String? description;
   final int? categoryId;
+  final DateTime? dueDate;
   final DateTime creationDate;
   final DateTime lastUpdateDate;
   final bool completed;
@@ -20,6 +21,7 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
       required this.title,
       this.description,
       this.categoryId,
+      this.dueDate,
       required this.creationDate,
       required this.lastUpdateDate,
       required this.completed});
@@ -34,6 +36,8 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
       categoryId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}category_id']),
+      dueDate: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}due_date']),
       creationDate: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}creation_date'])!,
       lastUpdateDate: const DateTimeType()
@@ -53,6 +57,9 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
     if (!nullToAbsent || categoryId != null) {
       map['category_id'] = Variable<int?>(categoryId);
     }
+    if (!nullToAbsent || dueDate != null) {
+      map['due_date'] = Variable<DateTime?>(dueDate);
+    }
     map['creation_date'] = Variable<DateTime>(creationDate);
     map['last_update_date'] = Variable<DateTime>(lastUpdateDate);
     map['completed'] = Variable<bool>(completed);
@@ -69,6 +76,9 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
       categoryId: categoryId == null && nullToAbsent
           ? const Value.absent()
           : Value(categoryId),
+      dueDate: dueDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dueDate),
       creationDate: Value(creationDate),
       lastUpdateDate: Value(lastUpdateDate),
       completed: Value(completed),
@@ -83,6 +93,7 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String?>(json['description']),
       categoryId: serializer.fromJson<int?>(json['categoryId']),
+      dueDate: serializer.fromJson<DateTime?>(json['dueDate']),
       creationDate: serializer.fromJson<DateTime>(json['creationDate']),
       lastUpdateDate: serializer.fromJson<DateTime>(json['lastUpdateDate']),
       completed: serializer.fromJson<bool>(json['completed']),
@@ -96,6 +107,7 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
       'title': serializer.toJson<String>(title),
       'description': serializer.toJson<String?>(description),
       'categoryId': serializer.toJson<int?>(categoryId),
+      'dueDate': serializer.toJson<DateTime?>(dueDate),
       'creationDate': serializer.toJson<DateTime>(creationDate),
       'lastUpdateDate': serializer.toJson<DateTime>(lastUpdateDate),
       'completed': serializer.toJson<bool>(completed),
@@ -107,6 +119,7 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
           String? title,
           String? description,
           int? categoryId,
+          DateTime? dueDate,
           DateTime? creationDate,
           DateTime? lastUpdateDate,
           bool? completed}) =>
@@ -115,6 +128,7 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
         title: title ?? this.title,
         description: description ?? this.description,
         categoryId: categoryId ?? this.categoryId,
+        dueDate: dueDate ?? this.dueDate,
         creationDate: creationDate ?? this.creationDate,
         lastUpdateDate: lastUpdateDate ?? this.lastUpdateDate,
         completed: completed ?? this.completed,
@@ -126,6 +140,7 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
           ..write('title: $title, ')
           ..write('description: $description, ')
           ..write('categoryId: $categoryId, ')
+          ..write('dueDate: $dueDate, ')
           ..write('creationDate: $creationDate, ')
           ..write('lastUpdateDate: $lastUpdateDate, ')
           ..write('completed: $completed')
@@ -134,7 +149,7 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
   }
 
   @override
-  int get hashCode => Object.hash(id, title, description, categoryId,
+  int get hashCode => Object.hash(id, title, description, categoryId, dueDate,
       creationDate, lastUpdateDate, completed);
   @override
   bool operator ==(Object other) =>
@@ -144,6 +159,7 @@ class DriftTodo extends DataClass implements Insertable<DriftTodo> {
           other.title == this.title &&
           other.description == this.description &&
           other.categoryId == this.categoryId &&
+          other.dueDate == this.dueDate &&
           other.creationDate == this.creationDate &&
           other.lastUpdateDate == this.lastUpdateDate &&
           other.completed == this.completed);
@@ -154,6 +170,7 @@ class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
   final Value<String> title;
   final Value<String?> description;
   final Value<int?> categoryId;
+  final Value<DateTime?> dueDate;
   final Value<DateTime> creationDate;
   final Value<DateTime> lastUpdateDate;
   final Value<bool> completed;
@@ -162,6 +179,7 @@ class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
     this.title = const Value.absent(),
     this.description = const Value.absent(),
     this.categoryId = const Value.absent(),
+    this.dueDate = const Value.absent(),
     this.creationDate = const Value.absent(),
     this.lastUpdateDate = const Value.absent(),
     this.completed = const Value.absent(),
@@ -171,6 +189,7 @@ class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
     required String title,
     this.description = const Value.absent(),
     this.categoryId = const Value.absent(),
+    this.dueDate = const Value.absent(),
     this.creationDate = const Value.absent(),
     this.lastUpdateDate = const Value.absent(),
     this.completed = const Value.absent(),
@@ -180,6 +199,7 @@ class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
     Expression<String>? title,
     Expression<String?>? description,
     Expression<int?>? categoryId,
+    Expression<DateTime?>? dueDate,
     Expression<DateTime>? creationDate,
     Expression<DateTime>? lastUpdateDate,
     Expression<bool>? completed,
@@ -189,6 +209,7 @@ class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
       if (title != null) 'title': title,
       if (description != null) 'description': description,
       if (categoryId != null) 'category_id': categoryId,
+      if (dueDate != null) 'due_date': dueDate,
       if (creationDate != null) 'creation_date': creationDate,
       if (lastUpdateDate != null) 'last_update_date': lastUpdateDate,
       if (completed != null) 'completed': completed,
@@ -200,6 +221,7 @@ class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
       Value<String>? title,
       Value<String?>? description,
       Value<int?>? categoryId,
+      Value<DateTime?>? dueDate,
       Value<DateTime>? creationDate,
       Value<DateTime>? lastUpdateDate,
       Value<bool>? completed}) {
@@ -208,6 +230,7 @@ class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
       title: title ?? this.title,
       description: description ?? this.description,
       categoryId: categoryId ?? this.categoryId,
+      dueDate: dueDate ?? this.dueDate,
       creationDate: creationDate ?? this.creationDate,
       lastUpdateDate: lastUpdateDate ?? this.lastUpdateDate,
       completed: completed ?? this.completed,
@@ -229,6 +252,9 @@ class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
     if (categoryId.present) {
       map['category_id'] = Variable<int?>(categoryId.value);
     }
+    if (dueDate.present) {
+      map['due_date'] = Variable<DateTime?>(dueDate.value);
+    }
     if (creationDate.present) {
       map['creation_date'] = Variable<DateTime>(creationDate.value);
     }
@@ -248,6 +274,7 @@ class DriftTodosCompanion extends UpdateCompanion<DriftTodo> {
           ..write('title: $title, ')
           ..write('description: $description, ')
           ..write('categoryId: $categoryId, ')
+          ..write('dueDate: $dueDate, ')
           ..write('creationDate: $creationDate, ')
           ..write('lastUpdateDate: $lastUpdateDate, ')
           ..write('completed: $completed')
@@ -286,6 +313,11 @@ class $DriftTodosTable extends DriftTodos
       type: const IntType(),
       requiredDuringInsert: false,
       $customConstraints: 'NULL REFERENCES DriftCategory(id)');
+  final VerificationMeta _dueDateMeta = const VerificationMeta('dueDate');
+  @override
+  late final GeneratedColumn<DateTime?> dueDate = GeneratedColumn<DateTime?>(
+      'due_date', aliasedName, true,
+      type: const IntType(), requiredDuringInsert: false);
   final VerificationMeta _creationDateMeta =
       const VerificationMeta('creationDate');
   @override
@@ -316,6 +348,7 @@ class $DriftTodosTable extends DriftTodos
         title,
         description,
         categoryId,
+        dueDate,
         creationDate,
         lastUpdateDate,
         completed
@@ -349,6 +382,10 @@ class $DriftTodosTable extends DriftTodos
           _categoryIdMeta,
           categoryId.isAcceptableOrUnknown(
               data['category_id']!, _categoryIdMeta));
+    }
+    if (data.containsKey('due_date')) {
+      context.handle(_dueDateMeta,
+          dueDate.isAcceptableOrUnknown(data['due_date']!, _dueDateMeta));
     }
     if (data.containsKey('creation_date')) {
       context.handle(
@@ -385,15 +422,21 @@ class $DriftTodosTable extends DriftTodos
 
 class DriftSubTask extends DataClass implements Insertable<DriftSubTask> {
   final int id;
+  final String description;
   final bool completed;
   final int todoId;
   DriftSubTask(
-      {required this.id, required this.completed, required this.todoId});
+      {required this.id,
+      required this.description,
+      required this.completed,
+      required this.todoId});
   factory DriftSubTask.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return DriftSubTask(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      description: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
       completed: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}completed'])!,
       todoId: const IntType()
@@ -404,6 +447,7 @@ class DriftSubTask extends DataClass implements Insertable<DriftSubTask> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['description'] = Variable<String>(description);
     map['completed'] = Variable<bool>(completed);
     map['todo_id'] = Variable<int>(todoId);
     return map;
@@ -412,6 +456,7 @@ class DriftSubTask extends DataClass implements Insertable<DriftSubTask> {
   DriftSubTasksCompanion toCompanion(bool nullToAbsent) {
     return DriftSubTasksCompanion(
       id: Value(id),
+      description: Value(description),
       completed: Value(completed),
       todoId: Value(todoId),
     );
@@ -422,6 +467,7 @@ class DriftSubTask extends DataClass implements Insertable<DriftSubTask> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DriftSubTask(
       id: serializer.fromJson<int>(json['id']),
+      description: serializer.fromJson<String>(json['description']),
       completed: serializer.fromJson<bool>(json['completed']),
       todoId: serializer.fromJson<int>(json['todoId']),
     );
@@ -431,14 +477,17 @@ class DriftSubTask extends DataClass implements Insertable<DriftSubTask> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'description': serializer.toJson<String>(description),
       'completed': serializer.toJson<bool>(completed),
       'todoId': serializer.toJson<int>(todoId),
     };
   }
 
-  DriftSubTask copyWith({int? id, bool? completed, int? todoId}) =>
+  DriftSubTask copyWith(
+          {int? id, String? description, bool? completed, int? todoId}) =>
       DriftSubTask(
         id: id ?? this.id,
+        description: description ?? this.description,
         completed: completed ?? this.completed,
         todoId: todoId ?? this.todoId,
       );
@@ -446,6 +495,7 @@ class DriftSubTask extends DataClass implements Insertable<DriftSubTask> {
   String toString() {
     return (StringBuffer('DriftSubTask(')
           ..write('id: $id, ')
+          ..write('description: $description, ')
           ..write('completed: $completed, ')
           ..write('todoId: $todoId')
           ..write(')'))
@@ -453,46 +503,57 @@ class DriftSubTask extends DataClass implements Insertable<DriftSubTask> {
   }
 
   @override
-  int get hashCode => Object.hash(id, completed, todoId);
+  int get hashCode => Object.hash(id, description, completed, todoId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DriftSubTask &&
           other.id == this.id &&
+          other.description == this.description &&
           other.completed == this.completed &&
           other.todoId == this.todoId);
 }
 
 class DriftSubTasksCompanion extends UpdateCompanion<DriftSubTask> {
   final Value<int> id;
+  final Value<String> description;
   final Value<bool> completed;
   final Value<int> todoId;
   const DriftSubTasksCompanion({
     this.id = const Value.absent(),
+    this.description = const Value.absent(),
     this.completed = const Value.absent(),
     this.todoId = const Value.absent(),
   });
   DriftSubTasksCompanion.insert({
     this.id = const Value.absent(),
+    required String description,
     this.completed = const Value.absent(),
     required int todoId,
-  }) : todoId = Value(todoId);
+  })  : description = Value(description),
+        todoId = Value(todoId);
   static Insertable<DriftSubTask> custom({
     Expression<int>? id,
+    Expression<String>? description,
     Expression<bool>? completed,
     Expression<int>? todoId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (description != null) 'description': description,
       if (completed != null) 'completed': completed,
       if (todoId != null) 'todo_id': todoId,
     });
   }
 
   DriftSubTasksCompanion copyWith(
-      {Value<int>? id, Value<bool>? completed, Value<int>? todoId}) {
+      {Value<int>? id,
+      Value<String>? description,
+      Value<bool>? completed,
+      Value<int>? todoId}) {
     return DriftSubTasksCompanion(
       id: id ?? this.id,
+      description: description ?? this.description,
       completed: completed ?? this.completed,
       todoId: todoId ?? this.todoId,
     );
@@ -503,6 +564,9 @@ class DriftSubTasksCompanion extends UpdateCompanion<DriftSubTask> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
     }
     if (completed.present) {
       map['completed'] = Variable<bool>(completed.value);
@@ -517,6 +581,7 @@ class DriftSubTasksCompanion extends UpdateCompanion<DriftSubTask> {
   String toString() {
     return (StringBuffer('DriftSubTasksCompanion(')
           ..write('id: $id, ')
+          ..write('description: $description, ')
           ..write('completed: $completed, ')
           ..write('todoId: $todoId')
           ..write(')'))
@@ -536,6 +601,12 @@ class $DriftSubTasksTable extends DriftSubTasks
       type: const IntType(),
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+      'description', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _completedMeta = const VerificationMeta('completed');
   @override
   late final GeneratedColumn<bool?> completed = GeneratedColumn<bool?>(
@@ -552,7 +623,7 @@ class $DriftSubTasksTable extends DriftSubTasks
       requiredDuringInsert: true,
       $customConstraints: 'REFERENCES DriftTodo(id)');
   @override
-  List<GeneratedColumn> get $columns => [id, completed, todoId];
+  List<GeneratedColumn> get $columns => [id, description, completed, todoId];
   @override
   String get aliasedName => _alias ?? 'drift_sub_tasks';
   @override
@@ -564,6 +635,14 @@ class $DriftSubTasksTable extends DriftSubTasks
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
     }
     if (data.containsKey('completed')) {
       context.handle(_completedMeta,
@@ -726,7 +805,9 @@ class $DriftCategoriesTable extends DriftCategories
   @override
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: const StringType(),
+      requiredDuringInsert: true,
+      $customConstraints: 'UNIQUE(name)');
   @override
   List<GeneratedColumn> get $columns => [id, name];
   @override

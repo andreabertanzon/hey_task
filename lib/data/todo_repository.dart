@@ -1,16 +1,18 @@
 import 'package:hey_task/data/i_todo_repository.dart';
 import 'package:hey_task/domain/domain.dart';
 import 'package:hey_task/data/drift/todo_database.dart';
+import 'package:hey_task/data/drift/db_domain_bridging.dart';
 
-class TodoRepository implements ITodoRepository{
+class TodoRepository implements ITodoRepository {
   HeyTaskDatabase db;
 
   TodoRepository({required this.db});
 
   @override
-  Future<List<Todo>> getAllTodos() {
-    // TODO: implement getCompletedTodos
-    throw UnimplementedError();
+  Future<List<Todo>> getAllTodos() async {
+    var result = await db.getAllTodos();
+
+    return Future.value(result.map((e) => e.asTodoModel).toList());
   }
 
   @override
@@ -47,6 +49,12 @@ class TodoRepository implements ITodoRepository{
   Stream<List<Todo>> watchTodos() {
     // TODO: implement watchTodos
     throw UnimplementedError();
+  }
+
+  @override
+  Future<List<SubTask>> getAllTaskSubtasks(int todoId) async{
+    var result = await db.getAllSubTasks(todoId);
+    return Future.value(result.map((e) => e.asSubTaskModel).toList());
   }
 
 }

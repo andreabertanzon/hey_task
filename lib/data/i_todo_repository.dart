@@ -9,4 +9,5 @@ abstract class ITodoRepository{
   Future<List<Todo>> getCompletedTodosByDate(DateTime dateTime);
   Future<void> markTodoCompleted(Todo todo);
   Future<List<Todo>> getTodosByCategory(Category category);
+  Future<List<SubTask>> getAllTaskSubtasks(int todoId);
 }
