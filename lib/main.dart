@@ -152,10 +152,6 @@ class AppRouter extends StatelessWidget {
       title: App.title,
     );
   }
-
-  void navigate(String path){
-
-  }
 }
 
 class Page1Screen extends StatelessWidget {
