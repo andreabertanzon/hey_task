@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hey_task/data/drift/todo_database.dart';
+import 'package:hey_task/navigation/app_router.dart';
+import 'package:hey_task/navigation/drawer_manager.dart';
+import 'package:hey_task/ui/hey_task_pages.dart';
 import 'package:hey_task/ui/components/drawer/drawer_component.dart';
 import 'package:hey_task/ui/components/drawer/drawer_menu_component.dart';
 import 'package:logging/logging.dart';
@@ -13,7 +15,7 @@ void main() {
 
   runApp(Provider<HeyTaskDatabase>(
     create: (context) => HeyTaskDatabase(),
-    child: const MainPage(),
+    child:  MainPage(),
     dispose: (context, db) => db.close(),
   ));
 }
@@ -28,128 +30,85 @@ void _setupLogging() {
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key}) : super(key: key);
+  MainPage({Key? key}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            backgroundColor: Colors.blue,
-            body: Stack(children: [DrawerComponent(), App()])));
-  }
-}
 
-class App extends StatefulWidget {
-  App({Key? key}) : super(key: key);
-
-  static const title = 'GoRouter Example: Declarative Routes';
+  final _drawerManager = DrawerManager();
+  late AppRouter _appRouter;
 
   @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
-  late double xOffSet;
-  late double yOffSet;
-  late double scaleFactor;
-  late bool isDrawerOpen;
-  bool isDragging = false;
-
-  @override
-  void initState() {
+  void initState(){
     super.initState();
 
-    closeDrawer();
-  }
-
-  void openDrawer() => setState(() {
-        xOffSet = 230;
-        yOffSet = 100;
-        scaleFactor = 0.8;
-        isDrawerOpen = true;
-      });
-
-  void closeDrawer() => setState(() {
-        xOffSet = 0;
-        yOffSet = 0;
-        scaleFactor = 1;
-        isDrawerOpen = false;
-      });
-
-  @override
-  Widget build(BuildContext context) => buildMainApp();
-
-  Widget buildMainApp() {
-    return WillPopScope(
-      onWillPop: () async{
-        if(isDrawerOpen){
-          closeDrawer();
-          return false;
-        }else{
-          return true;
-        }
-      },
-      child: GestureDetector(
-        onTap: closeDrawer,
-        onHorizontalDragStart: (details)=> isDragging=true,
-        onHorizontalDragUpdate: (details){
-          if(!isDragging) return;
-          const minMove = 1;
-          if(details.delta.dx > minMove){
-            openDrawer();
-          }else if(details.delta.dx < -minMove){
-            closeDrawer();
-          }
-          isDragging = false;
-        },
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-            transform: Matrix4.translationValues(xOffSet, yOffSet, 0)
-              ..scale(scaleFactor),
-            child: AbsorbPointer(
-              absorbing: isDrawerOpen,
-              child: ClipRRect(
-                borderRadius:BorderRadius.circular(isDrawerOpen ? 20 : 0),
-                child: AppRouter(
-                  openDrawer: openDrawer,
-                ),
-              ),
-            )),
-      ),
+    _appRouter = AppRouter(
+      drawerManager: _drawerManager
     );
   }
-}
-
-class AppRouter extends StatelessWidget {
-  final VoidCallback openDrawer;
-
-  const AppRouter({Key? key, required this.openDrawer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _router = GoRouter(
-      routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => Page1Screen(openDrawer: openDrawer),
-        ),
-        GoRoute(
-          path: '/page2',
-          builder: (context, state) => Page2Screen(
-            openDrawer: openDrawer,
-          ),
-        ),
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => _drawerManager),
       ],
-    );
-    return MaterialApp.router(
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
-      title: App.title,
+      child: Consumer<DrawerManager>(
+        builder: (context, drawerManager, child){
+          return MaterialApp(
+              home: Scaffold(
+                  backgroundColor: Colors.blue,
+                  body:  Stack(children: [
+                    const DrawerComponent(),
+                    WillPopScope(
+                      onWillPop: () async {
+                        if (drawerManager.isDrawerOpen) {
+                          drawerManager.closeDrawer();
+                          return false;
+                        } else {
+                          return true;
+                        }
+                      },
+                      child: GestureDetector(
+                        onTap: (){
+                          drawerManager.closeDrawer();
+                          },
+                        onHorizontalDragStart: (details) => drawerManager.setDragging(true),
+                        onHorizontalDragUpdate: (details) {
+                          if (!drawerManager.isDragging) return;
+                          const minMove = 1;
+                          if (details.delta.dx > minMove) {
+                            drawerManager.openDrawer();
+                          } else if (details.delta.dx < -minMove) {
+                            drawerManager.closeDrawer();
+                          }
+                          drawerManager.setDragging(false);
+                        },
+                        child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            transform: Matrix4.translationValues(drawerManager.xOffSet,drawerManager.yOffSet, 0)
+                              ..scale(drawerManager.scaleFactor),
+                            child: AbsorbPointer(
+                              absorbing: drawerManager.isDrawerOpen ,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(drawerManager.isDrawerOpen ? 20 : 0),
+                                child: Router(
+                                  routerDelegate: _appRouter,
+                                  backButtonDispatcher: RootBackButtonDispatcher(),
+                                ),
+                              ),
+                            )),
+                      ),
+                    )
+                  ])
+              )
+          );
+        },
+      ),
     );
   }
 }
@@ -159,20 +118,37 @@ class Page1Screen extends StatelessWidget {
 
   const Page1Screen({Key? key, required this.openDrawer}) : super(key: key);
 
+  static MaterialPage page({
+    required VoidCallback openDrawer,
+  }) {
+    return MaterialPage(
+        name: HeyTaskPages.firstPath,
+        key: ValueKey(HeyTaskPages.firstPath),
+        child: Page1Screen(
+          openDrawer: openDrawer,
+        ));
+  }
+
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) =>
+      Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white,
             leading: DrawerMenuComponent(
-              onClick: openDrawer,
+              onClick: (){
+                Provider.of<DrawerManager>(context, listen: false)
+                  .openDrawer();
+                },
             ),
-            title: const Text(App.title)),
+            title: const Text("Page 1")),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () => context.go('/page2'),
+                onPressed: () => {
+                  Provider.of<DrawerManager>(context, listen: false).goTo(AvailablePages.second)
+                },
                 child: const Text('Go to page 2'),
               ),
             ],
@@ -186,20 +162,37 @@ class Page2Screen extends StatelessWidget {
 
   const Page2Screen({Key? key, required this.openDrawer}) : super(key: key);
 
+
+  static MaterialPage page({
+    required VoidCallback openDrawer,
+  }) {
+    return MaterialPage(
+        name: HeyTaskPages.firstPath,
+        key: ValueKey(HeyTaskPages.firstPath),
+        child: Page2Screen(
+          openDrawer: openDrawer,
+        ));
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
             backgroundColor: Colors.white,
             leading: DrawerMenuComponent(
-              onClick: openDrawer,
+              onClick: (){
+                Provider.of<DrawerManager>(context, listen: false).openDrawer();
+              }
             ),
-            title: const Text(App.title)),
+            title: const Text("Page 2")),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
-                onPressed: () => context.go('/'),
+                onPressed: () => {
+                Provider.of<DrawerManager>(context, listen: false)
+                    .goTo(AvailablePages.first)
+                },
                 child: const Text('Go to home page'),
               ),
             ],

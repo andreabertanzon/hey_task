@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:hey_task/navigation/drawer_manager.dart';
 import 'package:hey_task/ui/components/drawer/drawer_item.dart';
+import 'package:provider/provider.dart';
 
 class DrawerComponent extends StatelessWidget {
   const DrawerComponent({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class DrawerComponent extends StatelessWidget {
             style: const TextStyle(color: Colors.white, fontSize: 14.0),
           ),
           onTap: (){
-            context.go('/page2');
+            Provider.of<DrawerManager>(context, listen: false).goTo(e.page);
           },
         )).toList(),
       );
