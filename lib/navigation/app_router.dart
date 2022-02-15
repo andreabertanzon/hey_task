@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hey_task/main.dart';
 import 'package:hey_task/navigation/drawer_manager.dart';
 import 'package:hey_task/ui/hey_task_pages.dart';
+import 'package:hey_task/ui/screens/categories_screen.dart';
+import 'package:hey_task/ui/screens/todo_rooster.dart';
 
 
 // 1
@@ -32,8 +34,8 @@ class AppRouter extends RouterDelegate
       key: navigatorKey,
       onPopPage: _handlePopPage,
       pages: [
-        if(drawerManager.selectedPage == AvailablePages.first) Page1Screen.page(openDrawer: drawerManager.openDrawer),
-        if(drawerManager.selectedPage == AvailablePages.second) Page2Screen.page(openDrawer: drawerManager.openDrawer),
+        if(drawerManager.selectedPage == AvailablePages.todoRooster) TodoRoosterScreen.page(openDrawer: drawerManager.openDrawer),
+        if(drawerManager.selectedPage == AvailablePages.categories) CategoriesScreen.page(openDrawer: drawerManager.openDrawer),
       ],
     );
   }

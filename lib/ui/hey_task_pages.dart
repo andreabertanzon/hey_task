@@ -4,5 +4,12 @@ class HeyTaskPages{
 }
 
 enum AvailablePages {
-  first,second
+  todoRooster,categories
+}
+
+class ScreenConfiguration{
+  static Map<AvailablePages, String> screensConfig = {
+    AvailablePages.todoRooster: "Tasks",
+    AvailablePages.categories: "Categories"
+  };
 }

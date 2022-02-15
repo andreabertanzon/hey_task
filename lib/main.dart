@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hey_task/data/drift/todo_database.dart';
 import 'package:hey_task/navigation/app_router.dart';
 import 'package:hey_task/navigation/drawer_manager.dart';
-import 'package:hey_task/ui/hey_task_pages.dart';
 import 'package:hey_task/ui/components/drawer/drawer_component.dart';
-import 'package:hey_task/ui/components/drawer/drawer_menu_component.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +28,7 @@ void _setupLogging() {
 }
 
 class MainPage extends StatefulWidget {
-  MainPage({Key? key}) : super(key: key);
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -61,7 +59,7 @@ class _MainPageState extends State<MainPage> {
         builder: (context, drawerManager, child){
           return MaterialApp(
               home: Scaffold(
-                  backgroundColor: Colors.blue,
+                  backgroundColor:  const Color.fromARGB(255, 2, 9, 38),
                   body:  Stack(children: [
                     const DrawerComponent(),
                     WillPopScope(
@@ -111,92 +109,4 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-}
-
-class Page1Screen extends StatelessWidget {
-  final VoidCallback openDrawer;
-
-  const Page1Screen({Key? key, required this.openDrawer}) : super(key: key);
-
-  static MaterialPage page({
-    required VoidCallback openDrawer,
-  }) {
-    return MaterialPage(
-        name: HeyTaskPages.firstPath,
-        key: ValueKey(HeyTaskPages.firstPath),
-        child: Page1Screen(
-          openDrawer: openDrawer,
-        ));
-  }
-
-  @override
-  Widget build(BuildContext context) =>
-      Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.white,
-            leading: DrawerMenuComponent(
-              onClick: (){
-                Provider.of<DrawerManager>(context, listen: false)
-                  .openDrawer();
-                },
-            ),
-            title: const Text("Page 1")),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () => {
-                  Provider.of<DrawerManager>(context, listen: false).goTo(AvailablePages.second)
-                },
-                child: const Text('Go to page 2'),
-              ),
-            ],
-          ),
-        ),
-      );
-}
-
-class Page2Screen extends StatelessWidget {
-  final VoidCallback openDrawer;
-
-  const Page2Screen({Key? key, required this.openDrawer}) : super(key: key);
-
-
-  static MaterialPage page({
-    required VoidCallback openDrawer,
-  }) {
-    return MaterialPage(
-        name: HeyTaskPages.firstPath,
-        key: ValueKey(HeyTaskPages.firstPath),
-        child: Page2Screen(
-          openDrawer: openDrawer,
-        ));
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.white,
-            leading: DrawerMenuComponent(
-              onClick: (){
-                Provider.of<DrawerManager>(context, listen: false).openDrawer();
-              }
-            ),
-            title: const Text("Page 2")),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () => {
-                Provider.of<DrawerManager>(context, listen: false)
-                    .goTo(AvailablePages.first)
-                },
-                child: const Text('Go to home page'),
-              ),
-            ],
-          ),
-        ),
-      );
 }

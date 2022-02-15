@@ -10,11 +10,14 @@ class DrawerItem {
 }
 
 class DrawerItems {
-  //TODO: find a way to have 1 and only 1 place to store screen names!!!!!!
-
   static final List<DrawerItem> linksBtnList = [
     DrawerItem(
-        title: 'Page One', icon: Icons.home, page: AvailablePages.first),
-    DrawerItem(title: 'Page Two', icon: Icons.calendar_today_sharp, page: AvailablePages.second),
+        title: ScreenConfiguration.screensConfig[AvailablePages.todoRooster]!,
+        icon: Icons.home,
+        page: AvailablePages.todoRooster),
+    DrawerItem(
+        title: ScreenConfiguration.screensConfig[AvailablePages.categories]!,
+        icon: Icons.calendar_today_sharp,
+        page: AvailablePages.categories),
   ];
 }

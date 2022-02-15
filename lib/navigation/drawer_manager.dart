@@ -3,7 +3,7 @@ import 'package:hey_task/ui/hey_task_pages.dart';
 
 class DrawerManager extends ChangeNotifier{
 
-  AvailablePages selectedPage = AvailablePages.first;
+  AvailablePages selectedPage = AvailablePages.todoRooster;
 
   void goTo(AvailablePages page){
     if(selectedPage == page) {
