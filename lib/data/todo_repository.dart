@@ -1,7 +1,12 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:hey_task/data/i_todo_repository.dart';
 import 'package:hey_task/domain/domain.dart';
 import 'package:hey_task/data/drift/todo_database.dart';
 import 'package:hey_task/data/drift/db_domain_bridging.dart';
+
+import '../utils.dart';
 
 class TodoRepository implements ITodoRepository {
   HeyTaskDatabase db;
@@ -47,8 +52,26 @@ class TodoRepository implements ITodoRepository {
 
   @override
   Stream<List<Todo>> watchTodos() {
-    // TODO: implement watchTodos
-    throw UnimplementedError();
+    var elements = [
+      Todo(id: 1, title:"Go shopping", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go hunting", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go beering", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go having fun", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go running", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go playing", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go see museum", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go calling a teacher", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go laughing", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go nesting", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go tuning the guitar", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go masking", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+      Todo(id: 1, title:"Go rising the bar", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
+    ];
+    return db.watchTodos().map((event) => event.map((e) => e.asTodoModel).toList());
+  }
+
+   Future<List<Todo>> test(List<Todo> todos) async {
+    return todos;
   }
 
   @override
@@ -57,33 +80,17 @@ class TodoRepository implements ITodoRepository {
     return Future.value(result.map((e) => e.asSubTaskModel).toList());
   }
 
-}
-
-/*
-* KEEP IN MIND
-* Stream<List<CategoryWithTasks>> watchAllCategories() {
-    return (select(categories)
-          ..orderBy(([
-            (c) => OrderingTerm(expression: c.name),
-          ])))
-        .join([leftOuterJoin(tasks, tasks.categoryId.equalsExp(categories.id))])
-        .watch()
-        .map((rows) {
-          final groupedData = <Category, List<Task>>{};
-
-          for (final row in rows) {
-            final category = row.readTable(categories);
-            final task = row.readTable(tasks);
-
-            final list = groupedData.putIfAbsent(category, () => []);
-            if (task != null) list.add(task);
-          }
-
-          return [
-            for (final entry in groupedData.entries)
-              CategoryWithTasks(category: entry.key, tasks: entry.value)
-          ];
-        });
+  @override
+  Future<void> insertTodo(Todo todo) async {
+    db.insertTodo(todo.asDto);
   }
-*
-* */
+
+  @override
+  Future<Result> deleteTodo(Todo todo) async {
+    final output = await db.deleteTodo(todo.id);
+    if(output < 1){
+      return const Result.error('error deleting from database');
+    }
+    return Future.value(Result(output));
+  }
+}

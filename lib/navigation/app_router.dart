@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hey_task/main.dart';
 import 'package:hey_task/navigation/drawer_manager.dart';
-import 'package:hey_task/ui/hey_task_pages.dart';
-import 'package:hey_task/ui/screens/categories_screen.dart';
-import 'package:hey_task/ui/screens/todo_rooster.dart';
+import 'package:hey_task/navigation/hey_task_pages.dart';
+import 'package:hey_task/ui/screens/screens_barrel.dart';
 
 
 // 1
@@ -36,6 +34,7 @@ class AppRouter extends RouterDelegate
       pages: [
         if(drawerManager.selectedPage == AvailablePages.todoRooster) TodoRoosterScreen.page(openDrawer: drawerManager.openDrawer),
         if(drawerManager.selectedPage == AvailablePages.categories) CategoriesScreen.page(openDrawer: drawerManager.openDrawer),
+        if(drawerManager.selectedPage == AvailablePages.settings) SettingsScreen.page(openDrawer: drawerManager.openDrawer),
       ],
     );
   }

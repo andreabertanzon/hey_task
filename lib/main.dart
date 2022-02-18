@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hey_task/data/data.dart';
 import 'package:hey_task/data/drift/todo_database.dart';
 import 'package:hey_task/navigation/app_router.dart';
 import 'package:hey_task/navigation/drawer_manager.dart';
@@ -13,7 +14,7 @@ void main() {
 
   runApp(Provider<HeyTaskDatabase>(
     create: (context) => HeyTaskDatabase(),
-    child:  MainPage(),
+    child:  const MainPage(),
     dispose: (context, db) => db.close(),
   ));
 }
@@ -54,6 +55,9 @@ class _MainPageState extends State<MainPage> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => _drawerManager),
+        Provider<ITodoRepository>(
+          lazy: false,
+          create: (_) => TodoRepository(db: Provider.of<HeyTaskDatabase>(context)),)
       ],
       child: Consumer<DrawerManager>(
         builder: (context, drawerManager, child){
@@ -72,7 +76,7 @@ class _MainPageState extends State<MainPage> {
                         }
                       },
                       child: GestureDetector(
-                        onTap: (){
+                        onTap: (){ 
                           drawerManager.closeDrawer();
                           },
                         onHorizontalDragStart: (details) => drawerManager.setDragging(true),

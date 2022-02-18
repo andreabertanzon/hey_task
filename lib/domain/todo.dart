@@ -4,7 +4,7 @@ import 'domain.dart';
 // ignore: must_be_immutable
 class Todo extends Equatable {
 
-  int? id;
+  int id;
   final String title;
   final String? description;
   List<SubTask>? subTasks;
@@ -12,7 +12,8 @@ class Todo extends Equatable {
   Category? category;
   bool completed = false;
 
-  Todo({this.id,
+  Todo({
+    this.id = -1,
     required this.title,
     this.description,
     this.subTasks,

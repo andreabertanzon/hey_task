@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hey_task/ui/hey_task_pages.dart';
+import 'package:hey_task/navigation/hey_task_pages.dart';
 
 class DrawerManager extends ChangeNotifier{
 

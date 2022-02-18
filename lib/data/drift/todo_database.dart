@@ -39,15 +39,14 @@ class HeyTaskDatabase extends _$HeyTaskDatabase {
   }
 
   /// Gets a Stream of Todos that can be observed by the final receiver
-  Stream<List<DriftTodo>> watchTodos(){
+  Stream<List<DriftTodo>> watchTodos() {
     return select(driftTodos).watch();
   }
 
   /// Inserts a new DriftTodo inside the Database
   /// you should call asDto to transform the Todo to the correspondent
   /// DriftTodo.
-  Future insertTodo(Insertable<DriftTodo> todo) =>
-      into(driftTodos).insert(todo);
+  Future insertTodo(DriftTodosCompanion todo) => into(driftTodos).insert(todo);
 
   /// Gets all the subTasks connected with a TaskId.
   /// It does not contain the category of the DriftTodo
@@ -89,7 +88,13 @@ class HeyTaskDatabase extends _$HeyTaskDatabase {
   Future insertCategory(Insertable<DriftCategory> category) =>
       into(driftCategories).insert(category);
 
+/// Deletes from DriftTodo and returns the number of rows affected
+/// when the number of rows is less than 1, delete did not work!
+  Future<int> deleteTodo(int taskId) =>
+      (delete(driftTodos)..where((tbl) => tbl.id.equals(taskId))).go();
 }
+
+//************ Classes ***********************
 
 @DataClassName("DriftTodo")
 class DriftTodos extends Table {
