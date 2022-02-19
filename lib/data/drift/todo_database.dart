@@ -144,7 +144,7 @@ class DriftSubTasks extends Table {
 class DriftCategories extends Table {
   IntColumn get id => integer().autoIncrement()();
 
-  TextColumn get name => text().customConstraint('UNIQUE(name)')();
+  TextColumn get name => text()();
 }
 
 class SubtaskWithTask {

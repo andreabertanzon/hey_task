@@ -10,7 +10,7 @@ class Todo extends Equatable {
   List<SubTask>? subTasks;
   DateTime? dueDate;
   Category? category;
-  bool completed = false;
+  bool completed;
 
   Todo({
     this.id = -1,
@@ -18,6 +18,7 @@ class Todo extends Equatable {
     this.description,
     this.subTasks,
     this.dueDate,
+    required this.completed,
     this.category});
 
   @override

@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hey_task/domain/domain.dart';
 import 'package:hey_task/navigation/drawer_manager.dart';
 import 'package:hey_task/ui/components/drawer/drawer_menu_component.dart';
+import 'package:hey_task/ui/screens/add_todo.dart';
 import 'package:hey_task/ui/theme/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -33,15 +34,6 @@ class TodoRoosterScreen extends StatefulWidget {
 
 class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
 
-  late ITodoRepository todoRepository;
-  late Stream<List<Todo>> stream;
-
-  @override void initState() {
-    todoRepository = Provider.of<ITodoRepository>(context, listen: false);
-    stream = todoRepository.watchTodos();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) => Consumer<DrawerManager>(
         builder: (context, drawerManager, child) {
@@ -68,16 +60,8 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
             floatingActionButton: FloatingActionButton(
               backgroundColor: LightColors.iconBlue,
               onPressed: () async {
-                final todo = Todo(
-                    id: 1,
-                    title: "Go rising the bar",
-                    description: "I have to go shopping tomorrow",
-                    subTasks: null,
-                    dueDate: DateTime.now(),
-                    category: null);
-                await todoRepository
-                    .insertTodo(todo);
-              },
+                Provider.of<DrawerManager>(context, listen: false).goTo(AvailablePages.addTodo);
+                },
               child: const Icon(Icons.add),
             ),
           );
@@ -86,10 +70,9 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
 
   Widget _buildTodoList(BuildContext context) {
     return StreamBuilder<List<Todo>>(
-      stream: Provider.of<ITodoRepository>(context, listen: true).watchTodos(),
+      stream: Provider.of<ITodoRepository>(context, listen: false).watchTodos(),
       builder: (context, AsyncSnapshot<List<Todo>> snapshot) {
-        if (snapshot.connectionState == ConnectionState.active && snapshot.data != null) {
-          debugPrint("SB Initialized");
+        if (snapshot.hasData) {
           final todos = snapshot.data ?? [];
           return ListView.builder(
             itemCount: todos.length,
@@ -104,10 +87,11 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
               );
             },
           );
-        } else {
+        } else if(snapshot.hasError) {
+          return Text('${snapshot.error}');
+        }
           return const Center(child: CircularProgressIndicator(),);
         }
-      },
     );
   }
 
@@ -123,7 +107,7 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
               icon: Icons.delete,
               onPressed: (context) async {
                 final result =
-                    await todoRepository
+                    await Provider.of(context, listen: false)
                         .deleteTodo(todo);
                 if (kDebugMode) {
                   print(result.when((value) => value,
@@ -150,7 +134,7 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
                     borderRadius: BorderRadius.circular(100)),
                 value: todo.completed,
                 onChanged: (boolean) async {
-                  await todoRepository.markTodoCompleted(todo.id);
+                  await Provider.of<ITodoRepository>(context, listen: false).markTodoCompleted(todo.id);
                 },
               ),
               title: Text(todo.title),

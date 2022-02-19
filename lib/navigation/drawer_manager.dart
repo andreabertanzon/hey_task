@@ -10,9 +10,8 @@ class DrawerManager extends ChangeNotifier{
       closeDrawer();
       return;
     }
-
-    selectedPage = page;
     closeDrawer();
+    selectedPage = page;
   }
 
   double xOffSet = 0;

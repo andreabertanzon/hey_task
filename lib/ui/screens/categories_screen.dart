@@ -16,8 +16,8 @@ class CategoriesScreen extends StatelessWidget {
     required VoidCallback openDrawer,
   }) {
     return MaterialPage(
-        name: HeyTaskPages.firstPath,
-        key: ValueKey(HeyTaskPages.firstPath),
+        name: HeyTaskPages.categoriesPath,
+        key: ValueKey(HeyTaskPages.categoriesPath),
         child: CategoriesScreen(
           openDrawer: openDrawer,
         ));

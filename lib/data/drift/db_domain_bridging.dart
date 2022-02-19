@@ -10,7 +10,8 @@ extension TodoWithCategoryToDomain on TodoWithCategory {
       description: todo.description,
       subTasks: null,
       dueDate: todo.dueDate,
-      category: category.asCategoryModel);
+      category: category.asCategoryModel,
+      completed: todo.completed);
 }
 
 extension SubTaskWithTaskToDomain on SubtaskWithTask {
@@ -29,9 +30,8 @@ extension TodoToDriftTodo on Todo {
   DriftTodosCompanion get asDto => DriftTodosCompanion(
       id: Value.absent(),
       title: Value(title),
-      description: description == null
-          ? const Value.absent()
-          : Value(description),
+      description:
+          description == null ? const Value.absent() : Value(description),
       categoryId: const Value.absent(),
       dueDate: dueDate == null ? Value.absent() : Value(dueDate));
 }
@@ -43,5 +43,6 @@ extension DriftTodoToTodo on DriftTodo {
       description: description,
       subTasks: null,
       dueDate: dueDate,
+      completed: completed,
       category: null);
 }
