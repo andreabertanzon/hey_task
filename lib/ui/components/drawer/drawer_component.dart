@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hey_task/navigation/drawer_manager.dart';
 import 'package:hey_task/ui/components/drawer/drawer_item.dart';
+import 'package:hey_task/ui/theme/colors.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,7 @@ class DrawerComponent extends StatelessWidget {
                 imageProvider: const AssetImage('assets/IMG_0005.jpeg')), //TODO: Remove hard coding
             const Divider(
               height: 48,
-              color: Color.fromARGB(255, 2, 9, 38),
+              color: LightColors.drawerBlue,
             ),
             const Padding(
               padding: EdgeInsets.only(left: 16.0),

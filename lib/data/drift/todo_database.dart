@@ -88,10 +88,19 @@ class HeyTaskDatabase extends _$HeyTaskDatabase {
   Future insertCategory(Insertable<DriftCategory> category) =>
       into(driftCategories).insert(category);
 
-/// Deletes from DriftTodo and returns the number of rows affected
-/// when the number of rows is less than 1, delete did not work!
+  /// Deletes from DriftTodo and returns the number of rows affected
+  /// when the number of rows is less than 1, delete did not work!
   Future<int> deleteTodo(int taskId) =>
       (delete(driftTodos)..where((tbl) => tbl.id.equals(taskId))).go();
+
+  Future markTodoCompleted(int todoId) {
+    return (update(driftTodos)
+      ..where((t) => t.id.equals(todoId))
+    ).write(const DriftTodosCompanion(
+      completed: Value(true),
+    ),
+  );
+  }
 }
 
 //************ Classes ***********************

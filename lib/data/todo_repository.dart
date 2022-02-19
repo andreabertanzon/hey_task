@@ -45,28 +45,12 @@ class TodoRepository implements ITodoRepository {
   }
 
   @override
-  Future<void> markTodoCompleted(Todo todo) {
-    // TODO: implement markTodoCompleted
-    throw UnimplementedError();
+  Future markTodoCompleted(int todoId) {
+    return db.markTodoCompleted(todoId);
   }
 
   @override
   Stream<List<Todo>> watchTodos() {
-    var elements = [
-      Todo(id: 1, title:"Go shopping", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go hunting", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go beering", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go having fun", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go running", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go playing", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go see museum", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go calling a teacher", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go laughing", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go nesting", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go tuning the guitar", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go masking", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-      Todo(id: 1, title:"Go rising the bar", description: "I have to go shopping tomorrow",subTasks: null, dueDate: DateTime.now(),category: null),
-    ];
     return db.watchTodos().map((event) => event.map((e) => e.asTodoModel).toList());
   }
 

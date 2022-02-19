@@ -14,7 +14,7 @@ void main() {
 
   runApp(Provider<HeyTaskDatabase>(
     create: (context) => HeyTaskDatabase(),
-    child:  const MainPage(),
+    child: const MainPage(),
     dispose: (context, db) => db.close(),
   ));
 }
@@ -36,35 +36,33 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
   final _drawerManager = DrawerManager();
   late AppRouter _appRouter;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
-    _appRouter = AppRouter(
-      drawerManager: _drawerManager
-    );
+    _appRouter = AppRouter(drawerManager: _drawerManager);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => _drawerManager),
         Provider<ITodoRepository>(
           lazy: false,
-          create: (_) => TodoRepository(db: Provider.of<HeyTaskDatabase>(context)),)
+          create: (_) =>
+              TodoRepository(db: Provider.of<HeyTaskDatabase>(context)),
+        )
       ],
       child: Consumer<DrawerManager>(
-        builder: (context, drawerManager, child){
+        builder: (context, drawerManager, child) {
           return MaterialApp(
               home: Scaffold(
-                  backgroundColor:  const Color.fromARGB(255, 2, 9, 38),
-                  body:  Stack(children: [
+                  backgroundColor: const Color.fromARGB(255, 2, 9, 38),
+                  body: Stack(children: [
                     const DrawerComponent(),
                     WillPopScope(
                       onWillPop: () async {
@@ -76,10 +74,11 @@ class _MainPageState extends State<MainPage> {
                         }
                       },
                       child: GestureDetector(
-                        onTap: (){ 
+                        onTap: () {
                           drawerManager.closeDrawer();
-                          },
-                        onHorizontalDragStart: (details) => drawerManager.setDragging(true),
+                        },
+                        onHorizontalDragStart: (details) =>
+                            drawerManager.setDragging(true),
                         onHorizontalDragUpdate: (details) {
                           if (!drawerManager.isDragging) return;
                           const minMove = 1;
@@ -92,23 +91,24 @@ class _MainPageState extends State<MainPage> {
                         },
                         child: AnimatedContainer(
                             duration: const Duration(milliseconds: 250),
-                            transform: Matrix4.translationValues(drawerManager.xOffSet,drawerManager.yOffSet, 0)
+                            transform: Matrix4.translationValues(
+                                drawerManager.xOffSet, drawerManager.yOffSet, 0)
                               ..scale(drawerManager.scaleFactor),
                             child: AbsorbPointer(
-                              absorbing: drawerManager.isDrawerOpen ,
+                              absorbing: drawerManager.isDrawerOpen,
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(drawerManager.isDrawerOpen ? 20 : 0),
+                                borderRadius: BorderRadius.circular(
+                                    drawerManager.isDrawerOpen ? 20 : 0),
                                 child: Router(
                                   routerDelegate: _appRouter,
-                                  backButtonDispatcher: RootBackButtonDispatcher(),
+                                  backButtonDispatcher:
+                                      RootBackButtonDispatcher(),
                                 ),
                               ),
                             )),
                       ),
                     )
-                  ])
-              )
-          );
+                  ])));
         },
       ),
     );
