@@ -23,7 +23,7 @@ extension SubTaskWithTaskToDomain on SubtaskWithTask {
 }
 
 extension on DriftCategory {
-  Category get asCategoryModel => Category(name: name);
+  Category get asCategoryModel => Category(name: name, color:1);
 }
 
 extension TodoToDriftTodo on Todo {

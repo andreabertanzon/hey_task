@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hey_task/data/data.dart';
-import 'package:hey_task/navigation/drawer_manager.dart';
 import 'package:hey_task/navigation/hey_task_pages.dart';
-import 'package:hey_task/ui/components/drawer/drawer_menu_component.dart';
 import 'package:hey_task/ui/theme/colors.dart';
-import 'package:provider/provider.dart';
 
 class AddTodoScreen extends StatefulWidget {
   const AddTodoScreen({Key? key}) : super(key: key);
@@ -29,9 +25,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> with SingleTickerProvider
     _controller =
         AnimationController(
             vsync: this,
-            duration: const Duration(milliseconds: 600),
+            duration: const Duration(milliseconds: 300),
             upperBound:1.3);
-    _controller.forward();
+     _controller.forward();
   }
 
   @override
@@ -45,10 +41,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> with SingleTickerProvider
         );
       },
       child: Scaffold(
+        backgroundColor:Colors.blue,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children:  [
+            children:  const [
               Text("Add Todo Screen"),
             ],
           ),
@@ -57,9 +54,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> with SingleTickerProvider
             backgroundColor: LightColors.iconBlue,
             onPressed: () async {
               //Provider.of<ITodoRepository>(context, listen: false).insertTodo(todo)
-              _controller.reverse().then((value) => Provider.of<DrawerManager>(context, listen: false).goTo(AvailablePages.todoRooster));
+              Navigator.pushReplacementNamed(context,'/');
             },
-            child: const Icon(Icons.add),
+            child: const Icon(Icons.done),
           )
       ),
     );
