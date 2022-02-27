@@ -13,10 +13,7 @@ import '../../navigation/hey_task_pages.dart';
 import '../../data/data.dart';
 
 class TodoRoosterScreen extends StatefulWidget {
-  final VoidCallback openDrawer;
-
-  const TodoRoosterScreen({Key? key, required this.openDrawer})
-      : super(key: key);
+  const TodoRoosterScreen({Key? key}) : super(key: key);
 
   static MaterialPage page({
     required VoidCallback openDrawer,
@@ -24,9 +21,7 @@ class TodoRoosterScreen extends StatefulWidget {
     return MaterialPage(
         name: HeyTaskPages.firstPath,
         key: ValueKey(HeyTaskPages.firstPath),
-        child: TodoRoosterScreen(
-          openDrawer: openDrawer,
-        ));
+        child: const TodoRoosterScreen());
   }
 
   @override
@@ -35,13 +30,7 @@ class TodoRoosterScreen extends StatefulWidget {
 
 class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
   @override
-  Widget build(BuildContext context) => Consumer<DrawerManager>(
-        builder: (context, drawerManager, child) {
-          return MaterialApp(
-              initialRoute: '/',
-              onGenerateRoute: (settings) => generateRoute(settings));
-        },
-      );
+  Widget build(BuildContext context) => _buildTodoRoosterMain(context);
 
   Widget _buildTodoRoosterMain(BuildContext context) {
     return Scaffold(
@@ -89,23 +78,87 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          CategoryCard(categoryTitle:"Casa",completionPerc: 0.9, numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"Spesa",completionPerc: 0.2,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"Materiale",completionPerc: 0.3,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"Clienti",completionPerc: 0.5,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"Urgente",completionPerc: 0.6,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"Dottore",completionPerc: 0.7,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"Valeggio",completionPerc: 0.2,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"Puglia",completionPerc: 0.4,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"test",completionPerc: 0.7,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"test",completionPerc: 0.4,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"test",completionPerc: 0.5,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"test",completionPerc: 0.5,numOfTasks: 10,totalTasks: 14,),
-                          CategoryCard(categoryTitle:"test",completionPerc: 0.5,numOfTasks: 10,totalTasks: 14,),
-                        ]
-                      ),
+                          scrollDirection: Axis.horizontal,
+                          children: const [
+                            CategoryCard(
+                              categoryTitle: "Casa",
+                              completionPerc: 0.9,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "Spesa",
+                              completionPerc: 0.2,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "Materiale",
+                              completionPerc: 0.3,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "Clienti",
+                              completionPerc: 0.5,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "Urgente",
+                              completionPerc: 0.6,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "Dottore",
+                              completionPerc: 0.7,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "Valeggio",
+                              completionPerc: 0.2,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "Puglia",
+                              completionPerc: 0.4,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "test",
+                              completionPerc: 0.7,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "test",
+                              completionPerc: 0.4,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "test",
+                              completionPerc: 0.5,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "test",
+                              completionPerc: 0.5,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                            CategoryCard(
+                              categoryTitle: "test",
+                              completionPerc: 0.5,
+                              numOfTasks: 10,
+                              totalTasks: 14,
+                            ),
+                          ]),
                     ),
                   ),
                 ),
@@ -199,25 +252,5 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
         ),
       ),
     );
-  }
-
-  Route<dynamic> generateRoute(RouteSettings settings) {
-    final arg = settings.arguments;
-
-    switch (settings.name) {
-      case '/':
-        return PageRouteBuilder(
-            settings:
-                settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-            pageBuilder: (context, __, ___) => _buildTodoRoosterMain(context),
-            transitionsBuilder: (_, a, __, c) =>
-                FadeTransition(opacity: a, child: c));
-      default:
-        return PageRouteBuilder(
-          settings:
-              settings, // Pass this to make popUntil(), pushNamedAndRemoveUntil(), works
-          pageBuilder: (context, __, ___) => AddTodoScreen(),
-        );
-    }
   }
 }
