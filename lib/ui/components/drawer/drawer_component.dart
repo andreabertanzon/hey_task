@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hey_task/navigation/drawer_manager.dart';
+import 'package:hey_task/navigation/hey_task_pages.dart';
 import 'package:hey_task/ui/components/drawer/drawer_item.dart';
 import 'package:hey_task/ui/theme/colors.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -17,7 +18,8 @@ class DrawerComponent extends StatelessWidget {
         child: Column(
           children: [
             buildTopPart(context,
-                imageProvider: const AssetImage('assets/IMG_0005.jpeg')), //TODO: Remove hard coding
+                imageProvider: const AssetImage(
+                    'assets/IMG_0005.jpeg')), //TODO: Remove hard coding
             const Divider(
               height: 48,
               color: LightColors.drawerBlue,
@@ -80,6 +82,7 @@ class DrawerComponent extends StatelessWidget {
                     style: const TextStyle(color: Colors.white, fontSize: 14.0),
                   ),
                   onTap: () {
+                    print('drawer');
                     Provider.of<DrawerManager>(context, listen: false)
                         .goTo(e.page);
                   },

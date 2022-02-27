@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hey_task/data/data.dart';
 import 'package:hey_task/data/drift/todo_database.dart';
-import 'package:hey_task/navigation/app_router.dart';
 import 'package:hey_task/navigation/drawer_manager.dart';
-import 'package:hey_task/ui/components/drawer/drawer_component.dart';
+import 'package:hey_task/ui/screens/add_todo.dart';
+import 'package:hey_task/ui/screens/drawer_screen.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
@@ -37,13 +37,10 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final _drawerManager = DrawerManager();
-  late AppRouter _appRouter;
 
   @override
   void initState() {
     super.initState();
-
-    _appRouter = AppRouter(drawerManager: _drawerManager);
   }
 
   @override
@@ -57,59 +54,29 @@ class _MainPageState extends State<MainPage> {
               TodoRepository(db: Provider.of<HeyTaskDatabase>(context)),
         )
       ],
-      child: Consumer<DrawerManager>(
-        builder: (context, drawerManager, child) {
-          return MaterialApp(
-              home: Scaffold(
-                  backgroundColor: const Color.fromARGB(255, 2, 9, 38),
-                  body: Stack(children: [
-                    const DrawerComponent(),
-                    WillPopScope(
-                      onWillPop: () async {
-                        if (drawerManager.isDrawerOpen) {
-                          drawerManager.closeDrawer();
-                          return false;
-                        } else {
-                          return true;
-                        }
-                      },
-                      child: GestureDetector(
-                        onTap: () {
-                          drawerManager.closeDrawer();
-                        },
-                        onHorizontalDragStart: (details) =>
-                            drawerManager.setDragging(true),
-                        onHorizontalDragUpdate: (details) {
-                          if (!drawerManager.isDragging) return;
-                          const minMove = 1;
-                          if (details.delta.dx > minMove) {
-                            drawerManager.openDrawer();
-                          } else if (details.delta.dx < -minMove) {
-                            drawerManager.closeDrawer();
-                          }
-                          drawerManager.setDragging(false);
-                        },
-                        child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            transform: Matrix4.translationValues(
-                                drawerManager.xOffSet, drawerManager.yOffSet, 0)
-                              ..scale(drawerManager.scaleFactor),
-                            child: AbsorbPointer(
-                              absorbing: drawerManager.isDrawerOpen,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    drawerManager.isDrawerOpen ? 20 : 0),
-                                child: Router(
-                                  routerDelegate: _appRouter,
-                                  backButtonDispatcher:
-                                      RootBackButtonDispatcher(),
-                                ),
-                              ),
-                            )),
-                      ),
-                    )
-                  ])));
+      child: MaterialApp(
+        onGenerateRoute: (settings) {
+          late final Widget child;
+          //this is for the pages
+          switch (settings.name) {
+            case '/add':
+              child = const AddTodoScreen();
+            // define screens
+          }
+          return PageRouteBuilder(
+              opaque: false,
+              pageBuilder: (
+                context,
+                animation,
+                _,
+              ) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              });
         },
+        home: const DrawerScreen(),
       ),
     );
   }
