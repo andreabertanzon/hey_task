@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:hey_task/ui/theme/colors.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class CategoryCard extends StatelessWidget {
-  CategoryCard(
+  const CategoryCard(
       {Key? key,
       required this.categoryTitle,
       required this.completionPerc,
@@ -18,7 +16,7 @@ class CategoryCard extends StatelessWidget {
   final double completionPerc;
   final int numOfTasks;
   final int totalTasks;
-  int categoryColor;
+  final int categoryColor;
 
   @override
   Widget build(BuildContext context) {

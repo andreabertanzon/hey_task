@@ -90,7 +90,7 @@ class _MainPageState extends State<MainPage> {
                           drawerManager.setDragging(false);
                         },
                         child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 250),
+                            duration: const Duration(milliseconds: 300),
                             transform: Matrix4.translationValues(
                                 drawerManager.xOffSet, drawerManager.yOffSet, 0)
                               ..scale(drawerManager.scaleFactor),

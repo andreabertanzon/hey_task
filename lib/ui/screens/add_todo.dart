@@ -25,7 +25,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> with SingleTickerProvider
     _controller =
         AnimationController(
             vsync: this,
-            duration: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 2000),
             upperBound:1.3);
      _controller.forward();
   }
@@ -41,22 +41,31 @@ class _AddTodoScreenState extends State<AddTodoScreen> with SingleTickerProvider
         );
       },
       child: Scaffold(
-        backgroundColor:Colors.blue,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children:  const [
-              Text("Add Todo Screen"),
-            ],
+        backgroundColor: LightColors.iconBlue,
+        body: 
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:  const [
+                  Text("Add a task",style: TextStyle(color: LightColors.defaultContainerColor),),
+                  TextField(style: TextStyle(color: LightColors.defaultContainerColor),),
+                  // TEXTFIELD for inputing the name
+                  // a way to input notes to remember
+                  // DatePicker
+                  // Category picker
+                ],
+              ),
+            ),
           ),
-        ),
           floatingActionButton: FloatingActionButton(
-            backgroundColor: LightColors.iconBlue,
+            backgroundColor: LightColors.backgroundColor,
             onPressed: () async {
               //Provider.of<ITodoRepository>(context, listen: false).insertTodo(todo)
               Navigator.pushReplacementNamed(context,'/');
             },
-            child: const Icon(Icons.done),
+            child: const Icon(Icons.done, color: LightColors.iconBlue,),
           )
       ),
     );

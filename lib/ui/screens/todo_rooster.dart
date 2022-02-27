@@ -173,7 +173,7 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
         ],
       ),
       child: Card(
-        elevation: 0.1,
+        elevation: 0.4,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),

@@ -54,7 +54,6 @@ class DrawerComponent extends StatelessWidget {
             radius: 50.0,
             lineWidth: 4.0,
             percent: 0.40,
-            //TODO: mutate from state with a consumer
             center: CircleAvatar(
               radius: 42,
               backgroundImage: imageProvider,
