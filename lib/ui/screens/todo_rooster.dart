@@ -4,9 +4,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hey_task/domain/domain.dart';
 import 'package:hey_task/navigation/drawer_manager.dart';
 import 'package:hey_task/ui/components/cards/category_card.dart';
+import 'package:hey_task/ui/components/cards/todo_widget_item.dart';
 import 'package:hey_task/ui/components/drawer/drawer_menu_component.dart';
-import 'package:hey_task/ui/screens/add_todo.dart';
 import 'package:hey_task/ui/theme/colors.dart';
+import 'package:hey_task/utils/app_strings.dart';
 import 'package:provider/provider.dart';
 
 import '../../navigation/hey_task_pages.dart';
@@ -104,60 +105,6 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
                               numOfTasks: 10,
                               totalTasks: 14,
                             ),
-                            CategoryCard(
-                              categoryTitle: "Urgente",
-                              completionPerc: 0.6,
-                              numOfTasks: 10,
-                              totalTasks: 14,
-                            ),
-                            CategoryCard(
-                              categoryTitle: "Dottore",
-                              completionPerc: 0.7,
-                              numOfTasks: 10,
-                              totalTasks: 14,
-                            ),
-                            CategoryCard(
-                              categoryTitle: "Valeggio",
-                              completionPerc: 0.2,
-                              numOfTasks: 10,
-                              totalTasks: 14,
-                            ),
-                            CategoryCard(
-                              categoryTitle: "Puglia",
-                              completionPerc: 0.4,
-                              numOfTasks: 10,
-                              totalTasks: 14,
-                            ),
-                            CategoryCard(
-                              categoryTitle: "test",
-                              completionPerc: 0.7,
-                              numOfTasks: 10,
-                              totalTasks: 14,
-                            ),
-                            CategoryCard(
-                              categoryTitle: "test",
-                              completionPerc: 0.4,
-                              numOfTasks: 10,
-                              totalTasks: 14,
-                            ),
-                            CategoryCard(
-                              categoryTitle: "test",
-                              completionPerc: 0.5,
-                              numOfTasks: 10,
-                              totalTasks: 14,
-                            ),
-                            CategoryCard(
-                              categoryTitle: "test",
-                              completionPerc: 0.5,
-                              numOfTasks: 10,
-                              totalTasks: 14,
-                            ),
-                            CategoryCard(
-                              categoryTitle: "test",
-                              completionPerc: 0.5,
-                              numOfTasks: 10,
-                              totalTasks: 14,
-                            ),
                           ]),
                     ),
                   ),
@@ -170,18 +117,7 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
                   return Column(
                     children: [
                       const SizedBox(
-                        height: 40,
-                      ),
-                      Row(
-                        children: const [
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Text("Tasks"),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(right: 16.0, left: 16.0),
@@ -210,47 +146,24 @@ class _TodoRoosterScreenState extends State<TodoRoosterScreen> {
         motion: const BehindMotion(),
         children: [
           SlidableAction(
-              label: 'Delete',
+              label: AppStrings.deleteLabel,
               backgroundColor: Colors.transparent,
               foregroundColor: LightColors.subTitleGrey,
               icon: Icons.delete,
               onPressed: (context) async {
                 final result =
-                    await Provider.of(context, listen: false).deleteTodo(todo);
+                    await Provider.of<ITodoRepository>(context, listen: false).deleteTodo(todo);
                 if (kDebugMode) {
                   print(result.when((value) => value,
-                      loading: () => "I am loading",
+                      loading: () => AppStrings.loadingLabel,
                       error: (String? message) => '$message'));
                 }
               }),
         ],
       ),
-      child: Card(
-        elevation: 0.4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        color: Colors.white,
-        child: Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: ListTile(
-              leading: Checkbox(
-                checkColor: LightColors.defaultContainerColor,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100)),
-                value: todo.completed,
-                onChanged: (boolean) async {
-                  await Provider.of<ITodoRepository>(context, listen: false)
-                      .markTodoCompleted(todo.id);
-                },
-              ),
-              title: Text(todo.title),
-            ),
-          ),
-        ),
-      ),
+      child: TodoWidgetItem(todo: todo,),
     );
   }
 }
+
+

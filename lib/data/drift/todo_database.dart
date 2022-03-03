@@ -40,7 +40,8 @@ class HeyTaskDatabase extends _$HeyTaskDatabase {
 
   /// Gets a Stream of Todos that can be observed by the final receiver
   Stream<List<DriftTodo>> watchTodos() {
-    return select(driftTodos).watch();
+    return (select(driftTodos)).watch();
+    //return customSelect("SELECT * FROM driftTodos WHERE ((completed = false) OR(date(creationDate,'localtime') = date('now','localtime')))", readsFrom: {driftTodos}).map((p0) => DriftTodo.fromData(p0.data)).watch();
   }
 
   /// Inserts a new DriftTodo inside the Database
